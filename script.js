@@ -138,13 +138,15 @@ function generateRouterTabs() {
           </label>
           <div id="serContainer${i}"></div>
         </div>
-        <label>Loopback Interfaces:
-          <span class="tooltip">?
-            <span class="tooltip-text">Virtual logical interfaces for testing and management (Command: <code>interface loopback[number]</code>)</span>
-          </span>
-          <input type="number" id="loop${i}" value="0" min="0" onchange="generateLoopbackFields(${i})">
-        </label>
-        <div id="loopContainer${i}"></div><br><br>
+        <div>
+          <label>Loopback Interfaces:
+            <span class="tooltip">?
+              <span class="tooltip-text">Virtual logical interfaces for testing and management (Command: <code>interface loopback[number]</code>)</span>
+            </span>
+            <input type="number" id="loop${i}" value="0" min="0" onchange="generateLoopbackFields(${i})">
+          </label>
+          <div id="loopContainer${i}"></div>
+        </div><br><br>
         
         <h3>Routing Configuration</h3>
         <div>
