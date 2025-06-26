@@ -39,6 +39,12 @@ function generateRouterTabs() {
           <input type="checkbox" onchange="toggleInput(this, 'hostname${i}')">
           <input type="text" id="hostname${i}" placeholder="Enter hostname" style="display:none">
         </label><br>
+        <label>No IP Domain Lookup?
+          <span class="tooltip">?
+            <span class="tooltip-text">Disables DNS lookups to prevent delays when typing incorrect commands (Command: <code>no ip domain-lookup</code>)</span>
+          </span>
+          <input type="checkbox" id="noDomainLookup${i}" checked>
+        </label><br>
         <label>Setup Domain-Name?
           <span class="tooltip">?
             <span class="tooltip-text">Set domain name (Command: <code>ip domain-name [name]</code>)</span>
