@@ -265,6 +265,35 @@ label {
   overflow-y: auto;
 }
 
+/* Notification popup */
+.notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: var(--accent-primary);
+  color: white;
+  padding: 12px 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 16px var(--shadow);
+  z-index: 10001;
+  transform: translateX(100%);
+  opacity: 0;
+  transition: all 0.3s ease;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.notification.show {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+.notification::before {
+  content: "✓";
+  margin-right: 8px;
+  font-weight: bold;
+}
+
 /* Interface containers - dynamic styling */
 [id*="Container"] {
   margin-top: 10px;
