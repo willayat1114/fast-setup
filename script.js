@@ -142,8 +142,9 @@ function generateRouterTabs() {
           <span class="tooltip">?
             <span class="tooltip-text">Virtual logical interfaces for testing and management (Command: <code>interface loopback[number]</code>)</span>
           </span>
-          <input type="number" id="loop${i}" value="0" min="0">
-        </label><br><br>
+          <input type="number" id="loop${i}" value="0" min="0" onchange="generateLoopbackFields(${i})">
+        </label>
+        <div id="loopContainer${i}"></div><br><br>
         
         <h3>Routing Configuration</h3>
         <div>
@@ -206,6 +207,15 @@ function generateRouterTabs() {
             <div id="ospfNetworks${i}"></div>
           </div>
         </div><br>
+      </div>
+      
+      <div style="margin-top: 20px; padding: 15px; background: var(--bg-secondary); border-radius: 8px; border-left: 4px solid var(--success-color);">
+        <label>Save Configuration?
+          <span class="tooltip">?
+            <span class="tooltip-text">Save running configuration to startup configuration (Command: <code>do wr</code> or <code>copy running-config startup-config</code>)</span>
+          </span>
+          <input type="checkbox" id="doWr${i}">
+        </label>
       </div>
     `;
     tabContent.appendChild(div);
@@ -361,6 +371,30 @@ function generateOspfNetFields(routerId) {
   }
 }
 
+function generateLoopbackFields(routerId) {
+  const count = parseInt(document.getElementById(`loop${routerId}`).value || 0);
+  const container = document.getElementById(`loopContainer${routerId}`);
+  const totalLoopbacks = count * 1; // Multiply by 1
+  
+  container.innerHTML = "";
+  
+  if (totalLoopbacks > 0) {
+    container.innerHTML = `<div style="margin: 10px 0; padding: 10px; border: 2px solid var(--border-color); border-radius: 8px; background: var(--bg-secondary);">
+      <strong style="color: var(--accent-primary);">Loopback Interfaces Configuration</strong><br><br>`;
+    
+    for (let i = 0; i < totalLoopbacks; i++) {
+      container.innerHTML += `
+        <div style="margin: 10px 0; padding: 10px; background: var(--bg-tertiary); border-radius: 6px; border: 1px solid var(--border-color);">
+          <strong style="color: var(--accent-primary);">Loopback Interface ${i}</strong><br>
+          IP Address: <input type="text" id="loopIP${routerId}_${i}" placeholder="10.${routerId}.${i}.1"><br>
+          Subnet Mask: <input type="text" id="loopMask${routerId}_${i}" placeholder="255.255.255.0"><br>
+        </div>`;
+    }
+    
+    container.innerHTML += `</div>`;
+  }
+}
+
 function generateCommands() {
   const count = document.getElementById('routerCount').value;
   let output = "";
@@ -482,10 +516,21 @@ function generateCommands() {
 
     const loopbackCount = parseInt(document.getElementById(`loop${i}`).value || 0);
     for (let l = 0; l < loopbackCount; l++) {
-      output += `interface loopback${l}
+      const loopIP = document.getElementById(`loopIP${i}_${l}`)?.value.trim();
+      const loopMask = document.getElementById(`loopMask${i}_${l}`)?.value.trim();
+      
+      if (loopIP && loopMask) {
+        output += `interface loopback${l}
+ ip address ${loopIP} ${loopMask}
+ exit
+`;
+      } else {
+        // Default configuration if no IP is specified
+        output += `interface loopback${l}
  ip address 10.${i}.${l}.1 255.255.255.0
  exit
 `;
+      }
     }
 
     // Routing configuration
@@ -544,6 +589,12 @@ function generateCommands() {
         output += ` exit
 `;
       }
+    }
+
+    // Add "do wr" command if checked
+    if (document.getElementById(`doWr${i}`)?.checked) {
+      output += `do wr
+`;
     }
   }
 
