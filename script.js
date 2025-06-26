@@ -553,12 +553,43 @@ function generateCommands() {
 function copyToClipboard() {
   const output = document.getElementById('output').innerText;
   if (!output) {
-    alert("Nothing to copy.");
+    showNotification("Nothing to copy.");
     return;
   }
   navigator.clipboard.writeText(output).then(() => {
-    alert("Commands copied to clipboard!");
+    showNotification("Copied to clipboard!");
   }).catch(() => {
-    alert("Failed to copy.");
+    showNotification("Failed to copy.");
   });
+}
+
+function showNotification(message) {
+  // Remove existing notification if any
+  const existingNotification = document.querySelector('.notification');
+  if (existingNotification) {
+    existingNotification.remove();
+  }
+
+  // Create notification element
+  const notification = document.createElement('div');
+  notification.className = 'notification';
+  notification.textContent = message;
+  
+  // Add to body
+  document.body.appendChild(notification);
+  
+  // Trigger animation
+  setTimeout(() => {
+    notification.classList.add('show');
+  }, 10);
+  
+  // Remove after 3 seconds
+  setTimeout(() => {
+    notification.classList.remove('show');
+    setTimeout(() => {
+      if (notification.parentNode) {
+        notification.remove();
+      }
+    }, 300);
+  }, 3000);
 }
