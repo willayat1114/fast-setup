@@ -309,6 +309,29 @@ label {
   border: 1px solid var(--border-color) !important;
 }
 
+/* Loopback container specific styling */
+#loopContainer1, #loopContainer2, #loopContainer3, #loopContainer4, #loopContainer5,
+#loopContainer6, #loopContainer7, #loopContainer8, #loopContainer9, #loopContainer10 {
+  margin-top: 10px;
+}
+
+/* Ensure loopback interfaces follow the same styling pattern */
+[id*="loopContainer"] > div {
+  background: var(--bg-secondary) !important;
+  border: 2px solid var(--border-color) !important;
+  border-radius: 8px !important;
+}
+
+[id*="loopContainer"] > div > div {
+  background: var(--bg-tertiary) !important;
+  border: 1px solid var(--border-color) !important;
+  border-radius: 6px !important;
+}
+
+[id*="loopContainer"] strong {
+  color: var(--accent-primary) !important;
+}
+
 /* Routing fields styling - dynamic */
 [id*="Fields"] {
   background: var(--bg-tertiary) !important;
